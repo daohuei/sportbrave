@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+          
+  <head>
+  
+    <title>Mission Map</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      html, body {
+        height: 85%;
+        margin: 0;
+        padding: 0;
+		background-color: #80deea    ;
+        font-family:Microsoft JhengHei;
+      }
+      #map {
+        height: 100%;
+      }
+
+
+    </style>
+	<script type="text/javascript" src="https://gc.kis.scr.kaspersky-labs.com/E4BEEC39-A445-DC4E-8206-181E72189541/main.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+
+        <script type="text/javascript">
+            // When the window has finished loading create our google map below
+            google.maps.event.addDomListener(window, 'load', init);
+        
+            function init() {
+                // Basic options for a simple Google Map
+                // For more options see: https://developers.google.com/maps/documentation/javascript/reference#MapOptions
+                var mapOptions = {
+                    // How zoomed in you want the map to start at (always required)
+                    zoom: 16,
+
+                    // The latitude and longitude to center the map (always required)
+                    center: new google.maps.LatLng(24.1223876,120.6617811), // my home
+
+                    // How you would like to style the map. 
+                    // This is where you would paste any style found on Snazzy Maps.
+                    styles: [
+					{"featureType":"water","elementType":"geometry","stylers":[{"visibility":"on"},{"color":"#aee2e0"}]},
+					{"featureType":"landscape","elementType":"geometry.fill","stylers":[{"color":"#abce83"}]},
+					{"featureType":"poi","elementType":"geometry.fill","stylers":[{"color":"#769E72"}]},
+					{"featureType":"poi","elementType":"labels.text.fill","stylers":[{"color":"#7B8758"}]},
+					{"featureType":"poi","elementType":"labels.text.stroke","stylers":[{"color":"#EBF4A4"}]},
+					{"featureType":"poi.park","elementType":"geometry","stylers":[{"visibility":"on"},{"color":"#8dab68"}]},
+					{"featureType":"road","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},
+					{"featureType":"road","elementType":"labels.text.fill","stylers":[{"color":"#5B5B3F"}]},
+					{"featureType":"road","elementType":"labels.text.stroke","stylers":[{"color":"#ABCE83"}]},
+					{"featureType":"road","elementType":"labels.icon","stylers":[{"visibility":"on"}]},
+					{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#A4C67D"}]},
+					{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#9BBF72"}]},
+					{"featureType":"road.highway","elementType":"geometry","stylers":[{"color":"#9BBF72"}]},
+					{"featureType":"transit","stylers":[{"visibility":"on"}]},
+					{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"visibility":"on"},{"color":"#87ae79"}]},
+					{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#7f2200"},{"visibility":"on"}]},
+					{"featureType":"administrative","elementType":"labels.text.stroke","stylers":[{"color":"#ffffff"},{"visibility":"on"},{"weight":4.1}]},
+					{"featureType":"administrative","elementType":"labels.text.fill","stylers":[{"color":"#495421"}]},
+					{"featureType":"administrative.neighborhood","elementType":"labels","stylers":[{"visibility":"on"}]}]
+                };
+
+                // Get the HTML DOM element that will contain your map 
+                // We are using a div with id="map" seen below in the <body>
+                var mapElement = document.getElementById('map');
+
+                // Create the Google Map using our element and options defined above
+                var map = new google.maps.Map(mapElement, mapOptions);
+
+                // Let's also add a marker while we're at it
+ var geocoder = new google.maps.Geocoder();
+  var str1 = "address1";
+  var str2 = "address2";
+
+      layer = new google.maps.FusionTablesLayer({
+	  suppressInfoWindows	: true,
+      map: map,
+      heatmap: { enabled: false },
+      query: {
+        select: "col4",
+        from: "1ZXFW3iHC1CUHWBRPruO74EuE7yBRvMiAjOWJY1aU",
+        where: ""
+      },
+ 
+      options: {
+        styleId: 2,
+        templateId: 2
+      }
+    });
+		  	    google.maps.event.addListener(layer, 'click', function(e) {
+          // Change the content of the InfoWindow
+		  $("#fo1").text(e.row['景點描述'].value);
+		  $("#fo2").text(e.row['景點名稱'].value);
+		  $("#fo3").text(e.row['流水號'].value);
+		  $("#fo4").text(e.row['地址'].value);
+		  $("#fo5").text(e.row['電話'].value);
+		  $("#fo6").text(e.row['網站'].value);
+		  
+		    var address = e.row['地址'].value;
+			
+	geocoder.geocode({'address': address}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      map.setCenter(results[0].geometry.location);
+	  map.setZoom(18);
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+			
+        });
+
+      }
+
+	
+            
+        </script>
+
+  </head>
+  <body>
+   <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+	    
+  
+
+
+        <div  id="map"></div>
+
+        <footer class="page-footer teal lighten-2">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text" id="fo2">支線任務</h5>
+                <p class="grey-text text-lighten-4" id="fo1">任務內容</p>
+              </div>
+              <div class="col l4 offset-l2 s12">
+                <h5 class="white-text" >任務資訊</h5>
+                <ul>
+                  <li><a class="grey-text text-lighten-3" id="fo3">編號</a></li>
+                  <li><a class="grey-text text-lighten-3" id="fo4">地址</a></li>
+                  <li><a class="grey-text text-lighten-3" id="fo5">電話</a></li>
+                  <li><a class="grey-text text-lighten-3" id="fo6">網站</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="copyright">
+              <div class="col l6 s12">
+                <button class="waves-effect waves-light btn">接受任務</button>
+                <button class="waves-effect waves-light btn">取消任務</button>
+              </div>
+            </div>
+          </div>
+        </footer>
+		
+    <script>
+
+function geocodeAddress(geocoder, resultsMap, astr) {
+  var address = document.getElementById(astr).value;
+  geocoder.geocode({'address': address}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      resultsMap.setCenter(results[0].geometry.location);
+	  resultsMap.setZoom(12);
+      var marker = new google.maps.Marker({
+        map: resultsMap,
+        position: results[0].geometry.location
+      });
+    } else {
+      alert('Geocode was not successful for the following reason: ' + status);
+    }
+  });
+}
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAltTkkJGqsXJX8va1TLbnHJ9-6ipe63NQ&signed_in=true&callback=initMap"
+        async defer></script>
+
+  </body>
+</html>
